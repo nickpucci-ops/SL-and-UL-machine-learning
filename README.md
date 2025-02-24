@@ -1,5 +1,5 @@
 # SL-and-UL-learning
-# CS465/565 Homework 1 - Part 1: Supervised Learning
+# Part 1: Supervised Learning
 
 ## How to run
 Make sure you have python 3 installed along with the following pip packages: `pandas`, `numpy`, `scikit-learn`.  
