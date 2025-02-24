@@ -1,3 +1,4 @@
+
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
@@ -28,17 +29,24 @@ plt.show()
 
 X = np.column_stack((x,y)) #combine x and y into the feature matrix (50, 2)
 
-poly = PolynomialFeatures(degree=2) #(1, x, y, x^2, xy, y^2)
+poly = PolynomialFeatures(degree=2) # degree 2 => (1, x, y, x^2, xy, y^2)
 X_poly = poly.fit_transform(X)# transform to (50, 6) for new columns
 
 #Using Ridge regression
-model = Ridge(alpha=1.0)#alpha is a constant that multiplies the L2 term and controls the regularization strength, alpha = 0 is linear regression
+model = Ridge(alpha=1000.0)#alpha is a constant that multiplies the L2 term and controls the regularization strength, alpha = 0 is linear regression
 model.fit(X_poly, z)
 
 z_pred = model.predict(X_poly) #Predict the z values for all 50 samples
 
 # Visualize predictions vs actual
 plt.scatter(z, z_pred, color='red', alpha=0.5)
+plt.plot([z.min(), z.max()], [z.min(), z.max()], 'k--')  # 45-degree line
+plt.xlabel('Actual z'); plt.ylabel('Predicted z')
+plt.title('Actual vs Predicted z')
+plt.show() 
+
+
+plt.scatter(z_pred, z, color='red', alpha=0.5)
 plt.plot([z.min(), z.max()], [z.min(), z.max()], 'k--')  # 45-degree line
 plt.xlabel('Actual z'); plt.ylabel('Predicted z')
 plt.title('Actual vs Predicted z')
