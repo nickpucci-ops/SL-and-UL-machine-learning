@@ -18,3 +18,11 @@ scaler_X = StandardScaler()
 X_scaled = scaler_X.fit_transform(X)  # Scale x, y
 scaler_z = StandardScaler(with_mean=True, with_std=True)
 z_scaled = scaler_z.fit_transform(z.reshape(-1, 1)).ravel()
+
+#Implement polynomial features (degree 2)
+poly = PolynomialFeatures(degree=2)  # (1, x, y, x^2, xy, y^2)
+X_poly = poly.fit_transform(X_scaled)  #(50, 6)
+
+# Train ridge model
+model = Ridge(alpha=1.0)#alpha is a constant that multiplies the L2 term and controls the regularization strength, alpha = 0 is linear regression
+model.fit(X_poly, z_scaled)
