@@ -23,6 +23,15 @@ z_scaled = scaler_z.fit_transform(z.reshape(-1, 1)).ravel()
 poly = PolynomialFeatures(degree=2)  # (1, x, y, x^2, xy, y^2)
 X_poly = poly.fit_transform(X_scaled)  #(50, 6)
 
-# Train ridge model
+#traing model with ridge regression, saving trained model, scalars, and polynomial transformer
 model = Ridge(alpha=1.0)#alpha is a constant that multiplies the L2 term and controls the regularization strength, alpha = 0 is linear regression
 model.fit(X_poly, z_scaled)
+
+trained_data = {
+    'model': model,
+    'scaler_X': scaler_X,
+    'scaler_z': scaler_z,
+    'poly': poly
+}
+with open('trained_model.pkl', 'wb') as f:
+    pickle.dump(trained_data, f)
