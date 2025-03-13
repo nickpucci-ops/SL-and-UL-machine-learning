@@ -2,9 +2,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-x = np.loadtxt('x.csv', delimiter=',')
-y = np.loadtxt('y.csv', delimiter=',')
-z = np.loadtxt('z.csv', delimiter=',')
+x = np.loadtxt('x_sample.csv', delimiter=',')
+y = np.loadtxt('y_sample.csv', delimiter=',')
+z = np.loadtxt('z_sample.csv', delimiter=',')
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
 
