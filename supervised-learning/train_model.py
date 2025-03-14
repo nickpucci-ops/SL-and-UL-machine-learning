@@ -7,9 +7,9 @@ from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 from sklearn.model_selection import train_test_split
 
 #training data
-x = pd.read_csv('x.csv', header=None).values.flatten()#.values.flatten => shapes as 50 rows
-y = pd.read_csv('y.csv', header=None).values.flatten()
-z = pd.read_csv('z.csv', header=None).values.flatten()
+x = pd.read_csv('data/x_sample.csv', header=None).values.flatten()#.values.flatten => shapes as 50 rows
+y = pd.read_csv('data/y_sample.csv', header=None).values.flatten()
+z = pd.read_csv('data/z_sample.csv', header=None).values.flatten()
 
 
 X = np.column_stack((x,y)) #combine x and y into the feature matrix 'X' (50, 2)
@@ -24,7 +24,7 @@ z_scaled = scaler_z.fit_transform(z.reshape(-1, 1)).ravel()
 poly = PolynomialFeatures(degree=3)  # (1, x, y, x^2, xy, y^2, x * y^2, x^2 * y, y^3, x^3 )
 X_poly = poly.fit_transform(X_scaled)  #(50, 10)
 
-alpha_constant = 300.0
+alpha_constant = 100.0
 #traing model with ridge regression, saving trained model, scalars, and polynomial transformer
 model_ridge = Ridge(alpha=alpha_constant)#alpha is a constant that multiplies the L2 term and controls the regularization strength
 model_ridge.fit(X_poly, z_scaled)
@@ -38,7 +38,7 @@ trained_data_ridge = {
     'scaler_z': scaler_z,
     'poly': poly
 }
-with open('trained_model_ridge.pkl', 'wb') as f:
+with open('trained_models/trained_model_ridge.pkl', 'wb') as f:
     pickle.dump(trained_data_ridge, f)
 
 
@@ -48,5 +48,5 @@ trained_data_no_ridge = {
     'scaler_z': scaler_z,
     'poly': poly
 }
-with open('trained_model_no_ridge.pkl', 'wb') as f:
+with open('trained_models/trained_model_no_ridge.pkl', 'wb') as f:
     pickle.dump(trained_data_no_ridge, f)

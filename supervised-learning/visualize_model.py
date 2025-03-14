@@ -4,18 +4,19 @@ import pickle
 import matplotlib.pyplot as plt
 from train_model import alpha_constant
 
-x = np.loadtxt('x.csv', delimiter=',')
-y = np.loadtxt('y.csv', delimiter=',')
+x = np.loadtxt('data/x_sample.csv', delimiter=',')
+y = np.loadtxt('data/y_sample.csv', delimiter=',')
+z_actual = np.loadtxt('data/z_sample.csv', delimiter=',')
 
 #loading ridge model
-with open('trained_model_ridge.pkl', 'rb') as f:
+with open('trained_models/trained_model_ridge.pkl', 'rb') as f:
     trained_data_ridge = pickle.load(f)
 model_ridge = trained_data_ridge['model']
 scaler_X_ridge = trained_data_ridge['scaler_X']
 scaler_z_ridge = trained_data_ridge['scaler_z']
 poly_ridge = trained_data_ridge['poly']
 #loading no ridge model
-with open('trained_model_no_ridge.pkl', 'rb') as f:
+with open('trained_models/trained_model_no_ridge.pkl', 'rb') as f:
     trained_data_no_ridge = pickle.load(f)
 model_no_ridge = trained_data_no_ridge['model']
 scaler_X_no_ridge = trained_data_no_ridge['scaler_X']
@@ -38,9 +39,7 @@ z_predicted_ridge = scaler_z_ridge.inverse_transform(z_pred_scaled_ridge.reshape
 z_pred_scaled_no_ridge = model_no_ridge.predict(X_poly_no_ridge)
 z_predicted_no_ridge = scaler_z_no_ridge.inverse_transform(z_pred_scaled_no_ridge.reshape(-1, 1)).ravel()
 
-z_actual = np.loadtxt('z.csv', delimiter=',')
-
-# Create subplots
+#old visualization, delete later once done testing
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
 
 # Plot 1: Predicted z vs x and y (Ridge model)
@@ -68,7 +67,7 @@ else:
 plt.tight_layout()
 plt.show()
 
-# Create subplots
+#new visualizations
 fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(18, 5))
 
 # Plot 1: Predicted z vs x and Actual z vs x (Ridge and No Ridge)
