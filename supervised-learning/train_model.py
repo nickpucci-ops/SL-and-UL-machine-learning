@@ -5,18 +5,21 @@ import pandas as pd
 from sklearn.linear_model import Ridge, LinearRegression
 from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
 
 # training data
-x = pd.read_csv('data/x.csv', header=None).values.flatten()  # .values.flatten => shapes as 50 rows
-y = pd.read_csv('data/y.csv', header=None).values.flatten()
-z = pd.read_csv('data/z.csv', header=None).values.flatten()
+x = pd.read_csv('data/x_sample.csv', header=None).values.flatten()  # .values.flatten => shapes as 50 rows
+y = pd.read_csv('data/y_sample.csv', header=None).values.flatten()
+z = pd.read_csv('data/z_sample.csv', header=None).values.flatten()
 
 X = np.column_stack((x, y))  # combine x and y into the feature matrix 'X' (50, 2)
 
 # training splits: 80% training, 20% test
-# 5 random restarts with different train-test splits
+# Perform 5 random restarts with different train-test splits
 n_restarts = 5
-alpha_constant = 100.0  # Keep your alpha value
+alpha_constant = 100.0 
+best_mse = float('inf')  # Track the best MSE
+best_restart = 0  # Track the best restart index
 
 for restart in range(n_restarts):
     print(f"Random Restart {restart + 1}/{n_restarts}")
@@ -42,13 +45,26 @@ for restart in range(n_restarts):
     model_ridge = Ridge(alpha=alpha_constant)  # alpha is a constant that multiplies the L2 term (the penalty) and controls the regularization strength
     model_ridge.fit(X_train_poly, z_train_scaled)
 
-    trained_data_ridge = {
-        'model': model_ridge,
-        'scaler_X': scaler_X,
-        'scaler_z': scaler_z,
-        'poly': poly,
-        'X_test': X_test,  # test data saved for visualization
-        'z_test': z_test
-    }
-    with open(f'trained_models/trained_model_ridge_restart_{restart}.pkl', 'wb') as f:
-        pickle.dump(trained_data_ridge, f)
+    # Predict on test set to evaluate MSE
+    z_pred_scaled_ridge = model_ridge.predict(X_test_poly)
+    z_pred_ridge = scaler_z.inverse_transform(z_pred_scaled_ridge.reshape(-1, 1)).ravel()
+    mse = mean_squared_error(z_test, z_pred_ridge)
+    print(f"MSE for Restart {restart}: {mse}")
+
+    # Track the best model based on MSE
+    if mse < best_mse:
+        best_mse = mse
+        best_restart = restart
+        best_trained_data_ridge = {
+            'model': model_ridge,
+            'scaler_X': scaler_X,
+            'scaler_z': scaler_z,
+            'poly': poly,
+            'X_test': X_test,  # test data saved for visualization
+            'z_test': z_test
+        }
+
+# Save only the best model
+with open(f'trained_models/trained_model_ridge_best.pkl', 'wb') as f:
+    pickle.dump(best_trained_data_ridge, f)
+print(f"Best model: {best_restart + 1} with MSE: {best_mse}")
