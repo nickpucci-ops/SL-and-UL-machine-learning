@@ -1,4 +1,4 @@
-#not submitted, only for training
+#training script for supervised learning with polynomial ridge regression (not submitted)
 import numpy as np
 import pickle
 import pandas as pd

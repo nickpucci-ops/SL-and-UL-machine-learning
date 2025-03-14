@@ -1,4 +1,4 @@
-# visualize_model.py (not submitted)
+# visualize trained model results with predicted z values (not submitted)
 import numpy as np
 import pickle
 import matplotlib.pyplot as plt
