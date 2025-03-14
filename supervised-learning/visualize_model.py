@@ -5,9 +5,9 @@ import matplotlib.pyplot as plt
 from train_model import alpha_constant
 from sklearn.metrics import mean_squared_error
 
-x = np.loadtxt('data/x_sample.csv', delimiter=',')
-y = np.loadtxt('data/y_sample.csv', delimiter=',')
-z_actual = np.loadtxt('data/z_sample.csv', delimiter=',')
+x = np.loadtxt('data/x.csv', delimiter=',')
+y = np.loadtxt('data/y.csv', delimiter=',')
+z_actual = np.loadtxt('data/z.csv', delimiter=',')
 
 # loading ridge model (best model)
 with open('trained_models/trained_model_ridge_best.pkl', 'rb') as f:
@@ -18,6 +18,8 @@ scaler_z_ridge = trained_data_ridge['scaler_z']
 poly_ridge = trained_data_ridge['poly']
 X_test = trained_data_ridge['X_test']
 z_test = trained_data_ridge['z_test']
+X_train = trained_data_ridge['X_train']
+z_train = trained_data_ridge['z_train']
 
 X = np.column_stack((x, y))
 
@@ -35,30 +37,42 @@ X_test_poly = poly_ridge.transform(X_test_scaled)
 z_pred_test_scaled = model_ridge.predict(X_test_poly)
 z_pred_test = scaler_z_ridge.inverse_transform(z_pred_test_scaled.reshape(-1, 1)).ravel()
 mse_test = mean_squared_error(z_test, z_pred_test)
-print(f"best model based on mse test set: {mse_test}")
+print(f"MSE on test set for best model: {mse_test}")
+
+# Predict on training set for MSE
+X_train_scaled = scaler_X_ridge.transform(X_train)
+X_train_poly = poly_ridge.transform(X_train_scaled)
+z_pred_train_scaled = model_ridge.predict(X_train_poly)
+z_pred_train = scaler_z_ridge.inverse_transform(z_pred_train_scaled.reshape(-1, 1)).ravel()
+mse_train = mean_squared_error(z_train, z_pred_train)
+#print(f"MSE on training set for best model: {mse_train}")
+
+# Predict on full dataset for MSE
+mse_full = mean_squared_error(z_actual, z_predicted_ridge)
+#print(f"MSE on full dataset for best model: {mse_full}")
 
 fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(18, 5))
 
 # Plot 1: Predicted z vs x and Actual z vs x (Ridge)
-ax1.scatter(x, z_actual, color='blue', alpha=0.5, label='Actual z vs x (full dataset)')
-ax1.scatter(X_test[:, 0], z_test, color='blue', alpha=0.5, label='Actual z vs x (test)')
-ax1.scatter(X_test[:, 0], z_pred_test, color='red', alpha=0.5, label=f'Pred z (Ridge, alpha={alpha_constant}) vs x')
+ax1.scatter(x, z_actual, color='blue', alpha=0.3, label='Actual z vs x (full dataset)')
+ax1.scatter(X_test[:, 0], z_test, color='cyan', alpha=0.7, marker='^', label='Actual z vs x (test)')
+ax1.scatter(x, z_predicted_ridge, color='red', alpha=0.3, marker='o', label=f'Pred z (Ridge, alpha={alpha_constant}) vs x')
 ax1.set_xlabel('x')
 ax1.set_ylabel('z')
 ax1.set_title('z vs x (Actual vs Predicted)')
 ax1.legend()
 
 # Plot 2: Predicted z vs y and Actual z vs y (Ridge)
-ax2.scatter(y, z_actual, color='green', alpha=0.5, label='Actual z vs y (full dataset)')
-ax2.scatter(X_test[:, 1], z_test, color='green', alpha=0.5, label='Actual z vs y (test)')
-ax2.scatter(X_test[:, 1], z_pred_test, color='red', alpha=0.5, label=f'Pred z (Ridge, alpha={alpha_constant}) vs y')
+ax2.scatter(y, z_actual, color='green', alpha=0.3, label='Actual z vs y (full dataset)')
+ax2.scatter(X_test[:, 1], z_test, color='lime', alpha=0.7, marker='^', label='Actual z vs y (test)')
+ax2.scatter(y, z_predicted_ridge, color='red', alpha=0.3, marker='o', label=f'Pred z (Ridge, alpha={alpha_constant}) vs y')
 ax2.set_xlabel('y')
 ax2.set_ylabel('z')
 ax2.set_title('z vs y (Actual vs Predicted)')
 ax2.legend()
 
 # Plot 3: Actual vs Predicted z (test set)
-ax3.scatter(z_pred_test, z_test, color='red', alpha=0.5, label=f'Ridge, alpha={alpha_constant}')
+ax3.scatter(z_pred_test, z_test, color='red', alpha=0.7, marker='o', label=f'Ridge, alpha={alpha_constant}')
 ax3.plot([z_test.min(), z_test.max()], [z_test.min(), z_test.max()], 'k--', label='Ideal Fit')
 ax3.set_xlabel('Predicted z')
 ax3.set_ylabel('Actual z')
