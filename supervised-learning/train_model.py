@@ -7,10 +7,9 @@ from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 from sklearn.model_selection import train_test_split
 
 #training data
-x = pd.read_csv('data/x_sample.csv', header=None).values.flatten()#.values.flatten => shapes as 50 rows
-y = pd.read_csv('data/y_sample.csv', header=None).values.flatten()
-z = pd.read_csv('data/z_sample.csv', header=None).values.flatten()
-
+x = pd.read_csv('data/x.csv', header=None).values.flatten()#.values.flatten => shapes as 50 rows
+y = pd.read_csv('data/y.csv', header=None).values.flatten()
+z = pd.read_csv('data/z.csv', header=None).values.flatten()
 
 X = np.column_stack((x,y)) #combine x and y into the feature matrix 'X' (50, 2)
 
@@ -26,7 +25,7 @@ X_poly = poly.fit_transform(X_scaled)  #(50, 10)
 
 alpha_constant = 100.0
 #traing model with ridge regression, saving trained model, scalars, and polynomial transformer
-model_ridge = Ridge(alpha=alpha_constant)#alpha is a constant that multiplies the L2 term and controls the regularization strength
+model_ridge = Ridge(alpha=alpha_constant)#alpha is a constant that multiplies the L2 term (the penalty) and controls the regularization strength
 model_ridge.fit(X_poly, z_scaled)
 
 model_no_ridge = LinearRegression()#alpha=0 is equivalent to linear regression

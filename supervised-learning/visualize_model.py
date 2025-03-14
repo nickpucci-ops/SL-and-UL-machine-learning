@@ -4,9 +4,9 @@ import pickle
 import matplotlib.pyplot as plt
 from train_model import alpha_constant
 
-x = np.loadtxt('data/x_sample.csv', delimiter=',')
-y = np.loadtxt('data/y_sample.csv', delimiter=',')
-z_actual = np.loadtxt('data/z_sample.csv', delimiter=',')
+x = np.loadtxt('data/x.csv', delimiter=',')
+y = np.loadtxt('data/y.csv', delimiter=',')
+z_actual = np.loadtxt('data/z.csv', delimiter=',')
 
 #loading ridge model
 with open('trained_models/trained_model_ridge.pkl', 'rb') as f:
@@ -39,35 +39,6 @@ z_predicted_ridge = scaler_z_ridge.inverse_transform(z_pred_scaled_ridge.reshape
 z_pred_scaled_no_ridge = model_no_ridge.predict(X_poly_no_ridge)
 z_predicted_no_ridge = scaler_z_no_ridge.inverse_transform(z_pred_scaled_no_ridge.reshape(-1, 1)).ravel()
 
-#old visualization, delete later once done testing
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
-
-# Plot 1: Predicted z vs x and y (Ridge model)
-ax1.scatter(x, z_predicted_ridge, color='blue', alpha=0.5, label='vs x')
-ax1.scatter(y, z_predicted_ridge, color='green', alpha=0.5, label='vs y')
-ax1.set_xlabel('x or y')
-ax1.set_ylabel('Predicted z')
-ax1.set_title(f'Predicted z vs x and y (Degree 3, alpha={alpha_constant})')
-ax1.legend()
-
-# Plot 2: Actual vs Predicted z (No Ridge vs Ridge)
-if z_actual is not None:
-    ax2.scatter(z_predicted_no_ridge, z_actual, color='purple', alpha=0.5, label='No Ridge')
-    ax2.scatter(z_predicted_ridge, z_actual, color='red', alpha=0.5, label=f'Ridge (alpha={alpha_constant})')
-    ax2.plot([z_actual.min(), z_actual.max()], [z_actual.min(), z_actual.max()], 'k--', label='Ideal Fit')
-    ax2.set_xlabel('Predicted z')
-    ax2.set_ylabel('Actual z')
-    ax2.set_title('Actual vs Predicted z (No Ridge vs Ridge)')
-    ax2.legend()
-else:
-    ax2.text(0.5, 0.5, 'No z.csv available\nCannot plot actual vs predicted',
-             ha='center', va='center', transform=ax2.transAxes)
-    ax2.set_title('Actual vs Predicted z (Unavailable)')
-
-plt.tight_layout()
-plt.show()
-
-#new visualizations
 fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(18, 5))
 
 # Plot 1: Predicted z vs x and Actual z vs x (Ridge and No Ridge)
