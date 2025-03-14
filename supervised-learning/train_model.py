@@ -35,9 +35,6 @@ alpha_constant = 100.0
 model_ridge = Ridge(alpha=alpha_constant)#alpha is a constant that multiplies the L2 term (the penalty) and controls the regularization strength
 model_ridge.fit(X_train_poly, z_train_scaled)
 
-model_no_ridge = LinearRegression()#alpha=0 is equivalent to linear regression
-model_no_ridge.fit(X_train_poly, z_train_scaled)
-
 trained_data_ridge = {
     'model': model_ridge,
     'scaler_X': scaler_X,
@@ -49,14 +46,3 @@ trained_data_ridge = {
 with open('trained_models/trained_model_ridge.pkl', 'wb') as f:
     pickle.dump(trained_data_ridge, f)
 
-
-trained_data_no_ridge = {
-    'model': model_no_ridge,
-    'scaler_X': scaler_X,
-    'scaler_z': scaler_z,
-    'poly': poly,
-    'X_test': X_test,
-    'z_test': z_test
-}
-with open('trained_models/trained_model_no_ridge.pkl', 'wb') as f:
-    pickle.dump(trained_data_no_ridge, f)

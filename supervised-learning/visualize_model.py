@@ -15,29 +15,18 @@ model_ridge = trained_data_ridge['model']
 scaler_X_ridge = trained_data_ridge['scaler_X']
 scaler_z_ridge = trained_data_ridge['scaler_z']
 poly_ridge = trained_data_ridge['poly']
-#loading no ridge model
-with open('trained_models/trained_model_no_ridge.pkl', 'rb') as f:
-    trained_data_no_ridge = pickle.load(f)
-model_no_ridge = trained_data_no_ridge['model']
-scaler_X_no_ridge = trained_data_no_ridge['scaler_X']
-scaler_z_no_ridge = trained_data_no_ridge['scaler_z']
-poly_no_ridge = trained_data_no_ridge['poly']
+#X_test = trained_data_ridge['X_test']
+#z_test = trained_data_ridge['z_test']
 
 X = np.column_stack((x, y))
 
-# Scale features and transform to polynomial features
+# Scale features and transform to polynomial features (test set 20%)
 X_scaled_ridge = scaler_X_ridge.transform(X)
 X_poly_ridge = poly_ridge.transform(X_scaled_ridge)
-
-X_scaled_no_ridge = scaler_X_no_ridge.transform(X)
-X_poly_no_ridge = poly_no_ridge.transform(X_scaled_no_ridge)
 
 # Predict
 z_pred_scaled_ridge = model_ridge.predict(X_poly_ridge)
 z_predicted_ridge = scaler_z_ridge.inverse_transform(z_pred_scaled_ridge.reshape(-1, 1)).ravel()
-
-z_pred_scaled_no_ridge = model_no_ridge.predict(X_poly_no_ridge)
-z_predicted_no_ridge = scaler_z_no_ridge.inverse_transform(z_pred_scaled_no_ridge.reshape(-1, 1)).ravel()
 
 fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(18, 5))
 
@@ -57,13 +46,12 @@ ax2.set_ylabel('z')
 ax2.set_title('z vs y (Actual vs Predicted)')
 ax2.legend()
 
-# Plot 3: Actual vs Predicted z (No Ridge vs Ridge)
-ax3.scatter(z_predicted_no_ridge, z_actual, color='purple', alpha=0.5, label='No Ridge')
-ax3.scatter(z_predicted_ridge, z_actual, color='red', alpha=0.5, label=f'Ridge (alpha={alpha_constant})')
+# Plot 3: Actual vs Predicted z
+ax3.scatter(z_predicted_ridge, z_actual, color='red', alpha=0.5, label=f'Ridge ,alpha={alpha_constant}')
 ax3.plot([z_actual.min(), z_actual.max()], [z_actual.min(), z_actual.max()], 'k--', label='Ideal Fit')
 ax3.set_xlabel('Predicted z')
 ax3.set_ylabel('Actual z')
-ax3.set_title('Actual vs Predicted z (No Ridge vs Ridge)')
+ax3.set_title('Actual vs Predicted z (PolyRidge Regression)')
 ax3.legend()
 
 plt.tight_layout()
