@@ -48,7 +48,7 @@ Once I had this, I knew I had enough evidence to go with polynomial regression, 
 To further prove why I believe my method is the best, I created `generate_samples.py` to create my own synthetic data that follows a similar formula that the provided csv files seem to follow. This time it's 100 samples and the noise factor is much larger. Here is an example of the synthetic data I generated. followed by my PolyRidge model predicting z on it:
 ![xy-synthetic](supervised-learning/images/synthetic-xy.jpg) 
 ![XY-synthetic-alpha=25](supervised-learning/images/XY-synthetic-alpha=25.jpg) 
-I also compared the predicted z values with the actual synthetic z values
+The red dots, representing predicted z values, uncover the function super well. And they dont fit to the noise at all. I compared the predicted z values with the actual synthetic z values and we can see that we have a great balance in between overfitting (exactly on the Ideal Fit line) and underfitting (scattered red dots everywhere)
 ![Z-synthetic-alpha=25](supervised-learning/images/Z-synthetic-alpha=25.jpg) 
 
 
