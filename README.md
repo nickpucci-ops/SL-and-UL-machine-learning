@@ -48,9 +48,42 @@ Once I had this, I knew I had enough evidence to go with polynomial regression, 
 To further prove why I believe my method is the best, I created `generate_samples.py` to create my own synthetic data that follows a similar formula that the provided csv files seem to follow. This time it's 100 samples and the noise factor is much larger. Here is an example of the synthetic data I generated. followed by my PolyRidge model predicting z on it:
 ![xy-synthetic](supervised-learning/images/synthetic-xy.jpg) 
 ![XY-synthetic-alpha=25](supervised-learning/images/XY-synthetic-alpha=25.jpg) 
-The red dots, representing predicted z values, uncover the function super well with almost no overfitting to the noise. I compared the predicted z values with the actual synthetic z values and we can see that we have a great balance in between overfitting (exactly on the Ideal Fit line) and underfitting (scattered red dots everywhere)
+
+
+- The red dots, representing predicted z values, uncover the function super well with almost no overfitting to the noise. I compared the predicted z values with the actual synthetic z values (test set only) and we can see that we have a great balance in between overfitting (exactly on the Ideal Fit line) and underfitting (scattered red dots everywhere)
 ![Z-synthetic-alpha=25](supervised-learning/images/Z-synthetic-alpha=25.jpg) 
 
+### Trade offs: model complexity and empirical loss
+Using degree 3 polynomials generates 10 features (1, x, y, x^2, xy, y^2, x^3, x^2 y, xy^2, y^3), so for only 50 samples, this can pose a moderate risk of overfitting without regularization. The more features and complexity, the higher the risk of overfitting, and vice versa for underfitting.  
+
+To demonstrate what would happen if I did not use any regularization, I can set the alpha value to 0 in my ridge regression model. In ridge regression, the alpha constant is a non-negative float parameter that multiplies the L2 term and controls the regularization strength. A higher alpha value penalizes noise, and an alpha value of 0 is equivalent to linear regression. Here's an example of polynomial regression where the regressor is linear regression (alpha=0.0):
+![XY-alpha=0](supervised-learning/images/XY-alpha=0.jpg)
+![Z-alpha=0](supervised-learning/images/Z-alpha=0.jpg)
+
+
+- We can see every predicted z value aligns exactly with every single actual z value, which means the model has completely overfit to the training data. This is where ridge regression becomes useful. To find the best alpha constant to apply, I ran multiple tests with varying alphas [10, 25, 100, 1000]
+![XY-alpha=10](supervised-learning/images/XY-alpha=10.jpg)
+![XY-alpha=25](supervised-learning/images/XY-alpha=25.jpg)
+![XY-alpha=100](supervised-learning/images/XY-alpha=100.jpg)
+![XY-alpha=1000](supervised-learning/images/XY-alpha=1000.jpg)
+
+
+- Based on my observations, I found the regularization became too strong at 100 and after, while 10 and under were risking overfitting too much. I determined that 25 was an appropriate sweet spot and so chose it for my final model.
+
+  
+### Empirical Loss
+Here were the results during my testing in search for the best alpha constant. Again, of the 5 restarts for each alpha constant, I selected the model which had the lowest MSE.
+- alpha=0: Test MSE ≈ 68,872,024.60 (linear regression), severe overfitting.
+- alpha=10: Test MSE ≈ 203,353,223,240,804.28, slight overfitting.
+- alpha=25: Test MSE ≈ 388,901,150,554,052.75, balanced fit.
+- alpha=100: Test MSE ≈ 504,434,749,919,926.2, slight underfitting.
+- alpha=1000: Test MSE ≈ 1.1392588241442616e+16 , severe underfitting.
+
+Yes, these are extreme values. This is mainly due to the fact of the massive scaling difference between x, y and z and the polynomial functin being applied in the data. It's also why I chose to implement StandardScalar in my training script to be able to predict on a scaled set of data and then unscale for the final predictions to match the original scale of z. So while the linear regressor had the lowest MSE out of all the models I trained, that doesn't necessarily mean it was the best fit. This is the case for a lot of models; the lowest MSE is not the 'best' MSE. 
+
+Therefore, after many tests, I landed on PolyRidge regression with an alpha constant of 25.0. Here was the final Predicted z vs Actual z graph of my final model choice. The model picks up the function very well. It appears to be a slight overfit, but I believe it's mostly because of the limited noise and sample size. I confirmed my assumptions with the synthetic data examples I provided in my Justification section.
+![Z-alpha=25](supervised-learning/images/Z-alpha=25.jpg)
+![XY-alpha=25](supervised-learning/images/XY-alpha=25.jpg)
 
 
 
