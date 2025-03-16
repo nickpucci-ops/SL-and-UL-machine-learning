@@ -17,6 +17,6 @@
 I chose to use Polynomial Ridge regression using the python scikit-learn library.
 
 To start, I wanted to display x and y against z to see what kind of data I was handling. The csv files were 50 columns on 1 row of varying values, so I used pandas to read the csv files and then sort sort x and y into matrix 'X' as 50x2 with numpys column stack. Scikit’s regression models, including Ridge, expect the input features to be in a 2D array of shape (N samples, N features), which is why I needed to reformat the data using pandas and numpy. I created `xy.py` to simply visualize x and y against z
-![image](supervised_learning/images/xy.jpg)
+![xy](./supervised_learning/images/xy.jpg)
 
 
