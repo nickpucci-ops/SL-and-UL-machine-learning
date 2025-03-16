@@ -4,7 +4,7 @@ import pandas as pd
 
 np.random.seed(32)
 
-n_samples = 50
+n_samples = 100
 x = np.sort(np.random.uniform(-10, 10, n_samples))
 y = np.sort(np.random.uniform(-10, 10, n_samples))
 

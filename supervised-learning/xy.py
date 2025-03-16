@@ -2,7 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-#adjust these files to display your chosen x or y values against z
+#adjust these files to load your chosen x or y values against z
 x = np.loadtxt('data/x.csv', delimiter=',')
 y = np.loadtxt('data/y.csv', delimiter=',')
 z = np.loadtxt('data/z.csv', delimiter=',')
