@@ -64,6 +64,6 @@ for restart in range(n_restarts):
             'z_test': z_test,
         }
 
-with open(f'trained_models/trained_model_best.pkl', 'wb') as f:
+with open(f'trained_model_best.pkl', 'wb') as f:
     pickle.dump(best_trained_data, f)
 print(f"best model selected from restart {best_restart + 1} with test MSE: {best_mse}")
