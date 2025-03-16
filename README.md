@@ -3,7 +3,7 @@
 ## Part 1: Supervised Learning
 ### Running instructions
 - This python script predicts z values from input attributes x and y using a pre-trained Polynomial Ridge Regression model.
-- Here are the dependencies, copy and paste the following command if these are not already installed:
+- **Dependencies**: copy and paste the following command if these libraries are not already installed in your env:
   ```bash
   pip install scikit-learn numpy pandas
 - **Steps**:
