@@ -57,6 +57,7 @@ for restart in range(n_restarts):
     #mse_train = mean_squared_error(z_train, z_pred_train)
     #print(f"MSE for Restart {restart} on train set: {mse_train}")
 
+    #saving the fitting parameters of the best model (which ever has the lowest MSE of the 5 restarts)
     if mse_test < best_mse:
         best_mse = mse_test
         best_restart = restart
