@@ -7,7 +7,7 @@
   ```bash
   pip install scikit-learn numpy pandas
 - **Steps**:
-  1. Make sure `x.csv`, `y.csv` files are in the root directory, as well as `trained_model_best.pkl`
+  1. Make sure `x.csv`, `y.csv` files are in the root directory, the submission zip will provide `trained_model_best.pkl` and the prediction script
   2. Run the prediction script:
      ```bash
      python3 supervised_learning.py
