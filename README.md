@@ -11,7 +11,7 @@
   2. Run the prediction script:
      ```bash
      python3 supervised_learning.py
-  3. The predicted z values from the model will be output to `z-predicted.csv`
+  3. The predicted z values from the model will be output to `z-predicted.csv`, nothing else will be output
  
 ### Model Architecture and Parameters
 I chose to use Polynomial Ridge regression using the python scikit-learn library
