@@ -51,12 +51,6 @@ for restart in range(n_restarts):
     mse_test = mean_squared_error(z_test, z_pred)
     print(f"MSE for restart {restart} on test set: {mse_test}")
 
-    #predict on training set for comparison
-    #z_pred_train_scaled = model.predict(X_train_poly)
-    #z_pred_train = scaler_z.inverse_transform(z_pred_train_scaled.reshape(-1, 1)).ravel()
-    #mse_train = mean_squared_error(z_train, z_pred_train)
-    #print(f"MSE for Restart {restart} on train set: {mse_train}")
-
     #saving the fitting parameters of the best model (which ever has the lowest MSE of the 5 restarts)
     if mse_test < best_mse:
         best_mse = mse_test
@@ -68,8 +62,6 @@ for restart in range(n_restarts):
             'poly': poly,
             'X_test': X_test,
             'z_test': z_test,
-            #'X_train': X_train,
-            #'z_train': z_train
         }
 
 with open(f'trained_models/trained_model_best.pkl', 'wb') as f:
