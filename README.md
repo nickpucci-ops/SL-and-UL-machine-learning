@@ -45,7 +45,7 @@ Once I had this, I knew I had enough evidence to go with polynomial regression, 
 - Decision Trees: Decision trees are non-parametric and can overfit noisy data by creating overly complex splits. Polynomial Ridge Regression offers a parametric solution with regularization to handle noise.
 - **Overall**: With how simple the graph looked and the small amount of noise present, polynomial regression appeared as the obvious choice because it would be the simplest to implement and I could also combine it with ridge regresion to account for the smaller amount of noise present to better predict a generalized solution. The other options would have been overcomplicated or impractical given the proof we have from the x, y , and z csv files.
 
-To further prove why I believe my method is the best, I created `generate_samples.py` to create my own synthetic data that follows a similar formula that the provided csv files seem to follow. Here is an example of the synthetic data I generated. followed by my PolyRidge model predicting z on it:
+To further prove why I believe my method is the best, I created `generate_samples.py` to create my own synthetic data that follows a similar formula that the provided csv files seem to follow. This time it's 100 samples and the noise factor is much larger. Here is an example of the synthetic data I generated. followed by my PolyRidge model predicting z on it:
 ![xy-synthetic](supervised-learning/images/synthetic-xy.jpg) 
 ![XY-synthetic-alpha=25](supervised-learning/images/XY-synthetic-alpha=25.jpg) 
 I also compared the predicted z values with the actual synthetic z values
