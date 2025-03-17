@@ -1,4 +1,4 @@
-# CS465 Machine Learning Homework (Supervised and Unsupervised)
+# Machine Learning Homework (Supervised and Unsupervised)
 
 ## Part 1: Supervised Learning
 ### Running instructions
